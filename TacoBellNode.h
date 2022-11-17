@@ -1,9 +1,14 @@
 #include <iostream>
 #include <string>
 
-class TacoBellNode {
+struct TacoBellNode {
     public:
-        TacoBellNode(double latitude, double longitude, std::string address, int store_id);
+        TacoBellNode(double latitude, double longitude, std::string address, int store_id) {
+            longitude_ = longitude;
+            latitude_ = latitude;
+            address_ = address;
+            store_id_ = store_id;
+        }
 
         double longitude_;
         double latitude_;
