@@ -4,11 +4,12 @@
 
 using namespace std;
 
-class Graph {
+class TacoBellGraph {
     public:
-        void insertVertex();
-        void insertEdge();
-        bool isConnected(int, int);
+        TacoBellGraph(string filename);
+        void insertVertex(TacoBellNode node);
+        void insertEdge(int id1, int id2);
+        bool isConnected(int id1, int id2);
         /**
          * Arguments are the starting and ending coordingates.
          * 
@@ -25,6 +26,8 @@ class Graph {
          * Returns a vector of all the ids that are from the first and last Taco Bell
         */
         vector<int> dijkstraSearch(int id1, int id2);
-        vector<TacoBellNode> vertexList;
-        vector<std::vector<int>> edgeLists;
+        void readFile(string filename);
+
+        vector<TacoBellNode> nodes;
+        vector<std::vector<int>> edges;
 };
