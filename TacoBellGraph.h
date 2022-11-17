@@ -9,7 +9,10 @@ class TacoBellGraph {
         TacoBellGraph(string filename);
         void insertVertex(TacoBellNode node);
         void insertEdge(int id1, int id2);
-        bool isConnected(int id1, int id2);
+        bool isConnected(int id1, int id2) const;
+        int size() const;
+        double getDistance(int id1, int id2) const;
+        
         /**
          * Arguments are the starting and ending coordingates.
          * 
@@ -18,16 +21,38 @@ class TacoBellGraph {
          * 
          * Returns all the ids
         */
-        vector<int> getPath(int startLong, int startLat, int endLong, int endLat);
+        vector<int> getPath(int startLong, int startLat, int endLong, int endLat) const;
     private:
         /**
          * Intenal search for getPath
          * 
          * Returns a vector of all the ids that are from the first and last Taco Bell
         */
-        vector<int> dijkstraSearch(int id1, int id2);
+        vector<int> dijkstraSearch(int id1, int id2) const;
+
+        /**
+         * Reads csv file with Taco Bell locations data
+        */
         void readFile(string filename);
 
+        /**
+         * Calculates the distance between two nodes using Google Maps API
+        */
+        double calculateDistance(int id1, int id2) const;
+
+        /**
+         * Edge struct for storing destiny id and distance(weight)
+        */
+        struct Edge {
+            Edge(int dest_id_, double distance_) {
+                dest_id = dest_id_;
+                distance = distance_;
+            }
+
+            int dest_id;
+            double distance;
+        };
+
         vector<TacoBellNode> nodes;
-        vector<std::vector<int>> edges;
+        vector<std::vector<Edge>> edges;
 };
