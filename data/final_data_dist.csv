@@ -1,4 +1,4 @@
-,id,address,currLat,currLong,near1Id,near2Id,near3Id,dist1,dist2,dist3
+id,id,address,currLat,currLong,near1Id,near2Id,near3Id,dist1,dist2,dist3
 0,0,555 W. Lake St.,41.93787872988775,-88.00291031599045,159,6,239,2.8,4.0,5.2
 1,1,11750 South Palaski Road,41.67910169304596,-87.72018933312398,31,15,108,4.0,4.4,9.1
 2,2,1195 E. Vienna Street,37.46232350886342,-89.23027038574219,17,-1,100,21.1,29.5,26.9

@@ -1,32 +1,61 @@
 #include "TacoBellGraph.h"
 #include <algorithm>
 #include <queue>
+#include <fstream>
+#include <sstream>
+#include <iterator>
 
 using namespace std;
 
 TacoBellGraph::TacoBellGraph(string filename) {
-
+    readFile(filename);
 }
 
 void TacoBellGraph::readFile(string filename) {
+    ifstream taco_bells(filename);
 
+     if (taco_bells.is_open()) {
+        std::istream_iterator<string> taco_bell_iter(taco_bells);
+        ++taco_bell_iter;
+        while (!taco_bells.eof()) {
+            string line = *taco_bell_iter;
+
+            stringstream ss(line);
+
+            vector<string> tokens;
+            string token;
+            while (getline(ss, token, ',')) tokens.push_back(token);
+
+            int id = stoi(tokens[1]);
+            string address = tokens[2];
+            double lat = stod(tokens[3]);
+            double lon = stod(tokens[4]);
+
+            insertVertex(lat, lon, address, id);
+            
+            edges.push_back(vector<Edge>());
+            insertEdge(id, stoi(tokens[5]), stod(tokens[8]));
+            insertEdge(id, stoi(tokens[6]), stod(tokens[9]));
+            insertEdge(id, stoi(tokens[7]), stod(tokens[10]));
+            
+            ++taco_bell_iter;
+        }
+    }
 }
 
-void TacoBellGraph::insertVertex(TacoBellNode node) {
+void TacoBellGraph::insertVertex(double latitude, double longitude, std::string address, int store_id) {
+    TacoBellNode node(latitude, longitude, address, store_id);
     nodes.push_back(node);
 }
 
-void TacoBellGraph::insertEdge(int id1, int id2) {
-    if (id1 >= size() || id2 >= size()) throw runtime_error("Id out of bounds");
-
-    double distance = calculateDistance(id1, id2);
-
+void TacoBellGraph::insertEdge(int id1, int id2, double distance) {
     edges[id1].push_back(Edge(id2, distance));
-    edges[id2].push_back(Edge(id1, distance));
 }
 
 bool TacoBellGraph::isConnected(int id1, int id2) const {
-    return find(edges[id1].begin(), edges[id1].end(), id2) != edges[id1].end();
+    for (Edge edge : edges[id1]) 
+        if (edge.dest_id == id2) return true;
+    return false;
 }
 
 int TacoBellGraph::size() const { return nodes.size(); }

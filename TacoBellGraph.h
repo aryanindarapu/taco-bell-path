@@ -7,8 +7,8 @@ using namespace std;
 class TacoBellGraph {
     public:
         TacoBellGraph(string filename);
-        void insertVertex(TacoBellNode node);
-        void insertEdge(int id1, int id2);
+        void insertVertex(double latitude, double longitude, std::string address, int store_id);
+        void insertEdge(int id1, int id2, double distance);
         bool isConnected(int id1, int id2) const;
         int size() const;
         double getDistance(int id1, int id2) const;
