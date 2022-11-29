@@ -53,6 +53,14 @@ class TacoBellGraph {
             double distance;
         };
 
+        /**
+         * @brief Helper function to find the node that corresponds to the id
+         * 
+         * @param id is the id that we want the node for
+         * @return TacoBellNode of that id 
+         */
+        TacoBellNode find(int id) const;
+
         vector<TacoBellNode> nodes;
         vector<std::vector<Edge>> edges;
 };

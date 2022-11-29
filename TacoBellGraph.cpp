@@ -4,6 +4,7 @@
 #include <fstream>
 #include <sstream>
 #include <iterator>
+#include <pair>
 
 using namespace std;
 
@@ -60,58 +61,58 @@ bool TacoBellGraph::isConnected(int id1, int id2) const {
 
 int TacoBellGraph::size() const { return nodes.size(); }
 
+// if the vector index is simply the id itself, change algorithm to simply return the nodes.at(i) where i is our index
+TacoBellNode TacoBellGraph::find(int id) const {
+    for (TacoBellNode node : nodes) {
+        if (node.store_id_ == id) {
+            return node;
+        }
+    }
+    throw runtime_error("node not found");
+    return TacoBellNode();
+}
+
 vector<int> TacoBellGraph::dijkstraSearch(int id1, int id2) const {
 
-    priority_queue<int> pq;
+    // based on the dataset, we will just use index for each id
+    vector<int> distance(nodes.size(), INT64_MAX);
+    vector<int> previous(nodes.size(), -1);
+    priority_queue<pair<int, int> pq;
+    vector<bool> visited(nodes.size(), false);
 
-    for (TacoBellNode node : nodes) {
+    distance[id1] = 0;
+    pq.push(id1, 0);
 
+    while (!pq.empty())
+    {
+        int current = pq.top().first;
+        pq.pop();
+
+        for (int i = 0; i < edges[current].size(); i++) {
+            int alt = distance[current] + edges[current][i].distance;
+
+            if (alt < distance[current]) {
+                distance[current] = alt;
+                previous[current] = current;
+                pq.push(pair<int,int>(edges[current][i].dest_id, alt))
+            }
+
+            if (edges[current][i].dest_id == id2) {
+                break;
+            }
+        }
+    }
+    
+    vector<int> path;
+
+    int current = id2;
+    while (current != -1) 
+    {
+        path.push_back(current);
+        current = previous(current);
     }
 
+    reverse(path.begin(), path.end());
 
-    //for reference
-
-    // int dist[V]; // The output array.  dist[i] will hold the
-    //              // shortest
-    // // distance from src to i
- 
-    // bool sptSet[V]; // sptSet[i] will be true if vertex i is
-    //                 // included in shortest
-    // // path tree or shortest distance from src to i is
-    // // finalized
- 
-    // // Initialize all distances as INFINITE and stpSet[] as
-    // // false
-    // for (int i = 0; i < V; i++)
-    //     dist[i] = INT_MAX, sptSet[i] = false;
- 
-    // // Distance of source vertex from itself is always 0
-    // dist[src] = 0;
- 
-    // // Find shortest path for all vertices
-    // for (int count = 0; count < V - 1; count++) {
-    //     // Pick the minimum distance vertex from the set of
-    //     // vertices not yet processed. u is always equal to
-    //     // src in the first iteration.
-    //     int u = minDistance(dist, sptSet);
- 
-    //     // Mark the picked vertex as processed
-    //     sptSet[u] = true;
- 
-    //     // Update dist value of the adjacent vertices of the
-    //     // picked vertex.
-    //     for (int v = 0; v < V; v++)
- 
-    //         // Update dist[v] only if is not in sptSet,
-    //         // there is an edge from u to v, and total
-    //         // weight of path from src to  v through u is
-    //         // smaller than current value of dist[v]
-    //         if (!sptSet[v] && graph[u][v]
-    //             && dist[u] != INT_MAX
-    //             && dist[u] + graph[u][v] < dist[v])
-    //             dist[v] = dist[u] + graph[u][v];
-    // }
- 
-    // // print the constructed distance array
-    // printSolution(dist);
+    return path;
 }
