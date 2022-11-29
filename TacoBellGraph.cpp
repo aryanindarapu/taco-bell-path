@@ -74,12 +74,18 @@ TacoBellNode TacoBellGraph::find(int id) const {
 
 vector<int> TacoBellGraph::dijkstraSearch(int id1, int id2) const {
 
+    if (id1 >= nodes.size() || id2 >= nodes.size() || id1 < 0 || id2 < 0)
+        throw runtime_error("One id is out of bounds: nodes size = " + nodes.size() + ", id1 = " + id1 + ", id2 = " + id2);
+
     // based on the dataset, we will just use index for each id
     vector<int> distance(nodes.size(), INT64_MAX);
     vector<int> previous(nodes.size(), -1);
     priority_queue<pair<int, int> pq;
+
+    // this is not implemented but we may needed if the algorithm is not functioning properly
     vector<bool> visited(nodes.size(), false);
 
+    //initial start of our alogrithm
     distance[id1] = 0;
     pq.push(id1, 0);
 
@@ -103,6 +109,9 @@ vector<int> TacoBellGraph::dijkstraSearch(int id1, int id2) const {
         }
     }
     
+    if (previous[id2] == -1)
+        throw runtime_error("Priority queue ended before reaching our destination node")
+
     vector<int> path;
 
     int current = id2;
