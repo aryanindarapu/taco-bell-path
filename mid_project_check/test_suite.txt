@@ -1,0 +1,4 @@
+Our test suite will run our Google Maps API that gets the distance between the current location and the nearest locations. 
+Additionally, the test suite will refactor the code to make it easier for the graph building/data storage.
+We will manually get the distance from the current Taco Bell to the three nearest Taco Bells using Google Maps.
+We will then compare that distance to what was distance calculated using the API and our CSV parsing.
