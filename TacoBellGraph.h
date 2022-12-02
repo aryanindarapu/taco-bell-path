@@ -24,9 +24,12 @@ class TacoBellGraph {
         vector<int> getPath(int startLong, int startLat, int endLong, int endLat) const;
 
         /**
-         * So uhhh I was supposed to do bfs? idk whats it for so heres a generic alg
+         *  Breadth first search from one taco bell to another.
+         * 
+         *  Returns a vector of all the taco bells that lead to the destination including the first location
         */
-        void BFS(int id1, int id2);
+        vector<int> BFS(int id1, int id2);
+        
     private:
         /**
          * Intenal search for getPath

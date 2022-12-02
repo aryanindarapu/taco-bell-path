@@ -127,11 +127,15 @@ vector<int> TacoBellGraph::dijkstraSearch(int id1, int id2) const {
 }
 
 /**
- *  So uhhh I was supposed to do bfs? idk whats it for so heres a generic alg
+ *  Breadth first search from one taco bell to another.
+ * 
+ *  Returns a vector of all the taco bells that lead to the destination including the first location
 */
-void TacoBellGraph::BFS(int id1, int id2) {
+vector<int> TacoBellGraph::BFS(int id1, int id2) {
+
     queue<int> q;
     vector<bool> visited (nodes, false);
+    vector<int> previous (nodes.size(), -1);
 
     q.push(id1);
     visited[id1] = true;
@@ -141,7 +145,17 @@ void TacoBellGraph::BFS(int id1, int id2) {
         int current = q.front();
         
         if (current == id2) {
-            // WHAT IS SUPPOSED TO HAPPEN?????
+
+            vector<int> path();
+            path.push_back(id2);
+
+            int previous_node = previous[id2];
+            while (previous_node != -1) {
+                path.push_back(previous_node);
+                previous_node = previous[previous_node];
+            }
+            reverse(previous.begin(), previous.end());
+            return path;
         }
 
         q.pop();
@@ -149,11 +163,12 @@ void TacoBellGraph::BFS(int id1, int id2) {
         for (Edge e : edges[current]) {
             if (!visited[e.dest_id]) {
                 q.push(e.dest_id)
+                previous[e.dest_id] = current;
             }
         }
 
         visited[current] = true;
     }
 
-    // No finding, dumb ass hoe
+    return vector<int>();
 }
