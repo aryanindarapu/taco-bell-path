@@ -125,3 +125,35 @@ vector<int> TacoBellGraph::dijkstraSearch(int id1, int id2) const {
 
     return path;
 }
+
+/**
+ *  So uhhh I was supposed to do bfs? idk whats it for so heres a generic alg
+*/
+void TacoBellGraph::BFS(int id1, int id2) {
+    queue<int> q;
+    vector<bool> visited (nodes, false);
+
+    q.push(id1);
+    visited[id1] = true;
+
+    while (!q.empty()) {
+
+        int current = q.front();
+        
+        if (current == id2) {
+            // WHAT IS SUPPOSED TO HAPPEN?????
+        }
+
+        q.pop();
+        
+        for (Edge e : edges[current]) {
+            if (!visited[e.dest_id]) {
+                q.push(e.dest_id)
+            }
+        }
+
+        visited[current] = true;
+    }
+
+    // No finding, dumb ass hoe
+}

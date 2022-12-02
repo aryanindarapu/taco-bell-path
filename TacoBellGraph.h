@@ -22,6 +22,11 @@ class TacoBellGraph {
          * Returns all the ids
         */
         vector<int> getPath(int startLong, int startLat, int endLong, int endLat) const;
+
+        /**
+         * So uhhh I was supposed to do bfs? idk whats it for so heres a generic alg
+        */
+        void BFS(int id1, int id2);
     private:
         /**
          * Intenal search for getPath
