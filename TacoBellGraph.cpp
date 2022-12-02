@@ -15,7 +15,7 @@ TacoBellGraph::TacoBellGraph(string filename) {
 void TacoBellGraph::readFile(string filename) {
     ifstream taco_bells(filename);
 
-     if (taco_bells.is_open()) {
+    if (taco_bells.is_open()) {
         std::istream_iterator<string> taco_bell_iter(taco_bells);
         ++taco_bell_iter;
         while (!taco_bells.eof()) {
