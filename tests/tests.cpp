@@ -122,11 +122,21 @@ TEST_CASE("test dijkstras search small", "[weight=5]") {
 }
 
 TEST_CASE("test dijkstras search 1", "[weight=5]") {
-    REQUIRE(true);
+    TacoBellGraph graph("../data/final_data_dist.csv");
+
+    vector<int> solution = {10, 238, 54, 156};
+    vector<int> test = graph.dijkstraSearch(10, 156);
+
+    REQUIRE(test == solution);
 }
 
 TEST_CASE("test dijkstras search 2", "[weight=5]") {
-    REQUIRE(true);
+    TacoBellGraph graph("../data/final_data_dist.csv");
+
+    vector<int> solution = {229, 137, 4, 242, 239, 238, 54, 147};
+    vector<int> test = graph.dijkstraSearch(229, 147);
+    
+    REQUIRE(test == solution);
 }
 
 TEST_CASE("test BFS search 1", "[weight=5") {
