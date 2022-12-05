@@ -123,6 +123,11 @@ vector<int> TacoBellGraph::dijkstraSearch(int id1, int id2) const {
         pq.pop();
 
         for (size_t i = 0; i < edges[current].size(); i++) {
+            // out of scope location, not going to use it
+            if (edges[current][i].dest_id == -1)
+                continue;
+
+            // valid location
             int alt = distance[current] + edges[current][i].distance;
 
             if (alt < distance[current]) {
@@ -160,8 +165,8 @@ vector<int> TacoBellGraph::dijkstraSearch(int id1, int id2) const {
  *  Returns a vector of all the taco bells that lead to the destination including the first location
 */
 vector<int> TacoBellGraph::BFS(int id1, int id2) {
-    if (id1 < 0 || id1 >= nodes.size() || id2 < 0 || id2 >= nodes.size)
-        throw runtime_error("id1 or id2 is out of bounds. " + "id1=" + id1 + ", id2=" + id2);
+    if (id1 < 0 || (unsigned int) id1 >= nodes.size() || id2 < 0 || (unsigned int) id2 >= nodes.size())
+        throw runtime_error("id1 or id2 is out of bounds.");
     
     queue<int> q;
     vector<bool> visited (nodes.size(), false);
@@ -186,7 +191,7 @@ vector<int> TacoBellGraph::BFS(int id1, int id2) {
                 path.push_back(previous_node);
                 previous_node = previous[previous_node];
             }
-            reverse(previous.begin(), previous.end());
+            reverse(path.begin(), path.end());
             return path;
         }
 
