@@ -106,10 +106,9 @@ std::vector<int> TacoBellGraph::dijkstraSearch(int id1, int id2) const {
     // based on the dataset, we will just use index for each id
     std::vector<int> distance(nodes.size(), std::numeric_limits<int>::max());
     std::vector<int> previous(nodes.size(), -1);
-    std::priority_queue<std::pair<int, int>> pq;
-
-    // this is not implemented but we may needed if the algorithm is not functioning properly
     std::vector<bool> visited(nodes.size(), false);
+
+    std::priority_queue<std::pair<int, int>> pq;
 
     //initial start of our alogrithm
     distance[id1] = 0;
@@ -123,26 +122,25 @@ std::vector<int> TacoBellGraph::dijkstraSearch(int id1, int id2) const {
         if (current == id2) break;
 
         for (size_t i = 0; i < edges[current].size(); i++) {
-            // out of scope location, not going to use it
-            if (edges[current][i].dest_id == -1)
+
+            // out of scope location or we already visited the node, not going to use it
+            if (edges[current][i].dest_id == -1 || visited[edges[current][i].dest_id]) {
                 continue;
+            }
 
             // valid location
             int alt = distance[current] + edges[current][i].distance;
-            std::cout << alt << std::endl;
-            if (alt < distance[current]) {
-                distance[current] = alt;
-                previous[current] = current;
+
+            if (alt < distance[edges[current][i].dest_id] && alt > 0) {
+                distance[edges[current][i].dest_id] = alt;
+                previous[edges[current][i].dest_id] = current;
                 pq.push(std::pair<int,int>(edges[current][i].dest_id, alt));
             }
+
         }
+
+        visited[current] = true;
     }
-    /*
-    cout << "All nodes with previous" << endl;
-    for (size_t i = 0; i < previous.size(); i++) {
-        cout << i << ": Previous=" << previous[i] << ", Distance from origin=" << distance[i] << endl;
-    }
-    */
 
     if (previous[id2] == -1)
         throw std::runtime_error("Priority queue ended before reaching our destination node");

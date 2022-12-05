@@ -2,6 +2,7 @@
 
 #include "TacoBellGraph.h"
 
+using namespace std;
 
 string vectorToString(vector<int> vect) {
     string out = "(";

@@ -1,5 +1,7 @@
 #include "TacoBellGraph.h"
 
+using namespace std;
+
 int main() {
 
     TacoBellGraph graph("../data/final_data_dist.csv");
