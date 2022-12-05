@@ -98,8 +98,21 @@ TacoBellNode TacoBellGraph::find(int id) const {
     throw std::runtime_error("node not found");
 }
 
+/**
+ * Internal function to print out the priority queue.
+ * All values are negative. Read pq in dijkstraSearch
+*/
+void printPQ(std::priority_queue<std::pair<int, int>> pq) {
+    while (!pq.empty()) {
+        std::cout << pq.top().first << "\t";
+        pq.pop();
+    }
+    std::cout << std::endl;
+}
+
 std::vector<int> TacoBellGraph::dijkstraSearch(int id1, int id2) const {
 
+    // Checks for valid ids
     if (id1 >= (int) nodes.size() || id2 >= (int) nodes.size() || id1 < 0 || id2 < 0)
         throw std::runtime_error("One id is out of bounds: nodes size = " + std::to_string(nodes.size()) + ", id1 = " + std::to_string(id1) + ", id2 = " + std::to_string(id2));
 
@@ -108,17 +121,20 @@ std::vector<int> TacoBellGraph::dijkstraSearch(int id1, int id2) const {
     std::vector<int> previous(nodes.size(), -1);
     std::vector<bool> visited(nodes.size(), false);
 
+    // Priority queue with distance as first and id as second
+    // distances are represented as negative values as the pq uses a max heap
     std::priority_queue<std::pair<int, int>> pq;
 
     //initial start of our alogrithm
     distance[id1] = 0;
-    pq.push(std::pair<int,int>(id1, 0));
+    pq.push(std::pair<int,int>(0, id1));
 
     while (!pq.empty())
-    {
-        int current = pq.top().first;
+    {   
+        int current = pq.top().second;
         pq.pop();
 
+        // current is the destination, we will terminate the pq
         if (current == id2) break;
 
         for (size_t i = 0; i < edges[current].size(); i++) {
@@ -128,31 +144,36 @@ std::vector<int> TacoBellGraph::dijkstraSearch(int id1, int id2) const {
                 continue;
             }
 
-            // valid location
+            // we will use the distance found in our distance vecotor and add it with the edge distance.
             int alt = distance[current] + edges[current][i].distance;
 
+            // since all values in the distance is vector, theres a safe check to ensure that alt > 0
             if (alt < distance[edges[current][i].dest_id] && alt > 0) {
                 distance[edges[current][i].dest_id] = alt;
                 previous[edges[current][i].dest_id] = current;
-                pq.push(std::pair<int,int>(edges[current][i].dest_id, alt));
+                // Again, alt is negative since pq is max heap
+                pq.push(std::pair<int,int>(-alt, edges[current][i].dest_id));
             }
 
         }
-
+        
+        // Mark our current id that we visited it.
         visited[current] = true;
     }
 
+    // This is to check that id2 has been marked and given a previous. If 
     if (previous[id2] == -1)
         throw std::runtime_error("Priority queue ended before reaching our destination node");
 
+    // Generates a path that takes us back to our start id
     std::vector<int> path;
-
     int current = id2;
     while (current != -1) {
         path.push_back(current);
         current = previous[current];
     }
 
+    // Path is backwards, so we need to reverse it
     reverse(path.begin(), path.end());
 
     return path;
