@@ -33,13 +33,15 @@ class TacoBellGraph {
         */
         vector<int> BFS(int id1, int id2);
         
-    private:
         /**
          * Intenal search for getPath
          * 
          * Returns a vector of all the ids that are from the first and last Taco Bell
         */
         vector<int> dijkstraSearch(int id1, int id2) const;
+
+    private:
+        
 
         /**
          * Reads csv file with Taco Bell locations data

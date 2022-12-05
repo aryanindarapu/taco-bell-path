@@ -20,3 +20,15 @@ TEST_CASE("test graph", "[weight=5][timeout=8000]") {
     REQUIRE(graph.getDistance(0, 239) == 5.2);
     REQUIRE(graph.getAddress(239) == "270 E Army Trail Rd");
 }
+
+TEST_CASE("test dijkstras search", "[weight=5]") {
+    TacoBellGraph graph("../data/final_data_dist.csv");
+
+    vector<int> solution = {105, 283, 284, 163};
+
+    vector<int> test = graph.dijkstraSearch(105, 163);
+
+    for (size_t i = 0; i < solution.size(); i++) {
+        REQUIRE(test[i] == solution[i]);
+    }
+}
