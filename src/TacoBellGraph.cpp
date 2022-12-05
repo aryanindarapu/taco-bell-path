@@ -166,6 +166,8 @@ vector<int> TacoBellGraph::BFS(int id1, int id2) {
     vector<int> previous (nodes.size(), -1);
 
     q.push(id1);
+
+    // Will recieve an error that vecotor is trying to access at index -1 when id1 is not
     visited.at(id1) = true;
 
     while (!q.empty()) {
