@@ -122,6 +122,9 @@ vector<int> TacoBellGraph::dijkstraSearch(int id1, int id2) const {
         int current = pq.top().first;
         pq.pop();
 
+        if (current == id2)
+            break;
+
         for (size_t i = 0; i < edges[current].size(); i++) {
             // out of scope location, not going to use it
             if (edges[current][i].dest_id == -1)
@@ -129,19 +132,21 @@ vector<int> TacoBellGraph::dijkstraSearch(int id1, int id2) const {
 
             // valid location
             int alt = distance[current] + edges[current][i].distance;
-
+            cout << alt << endl;
             if (alt < distance[current]) {
                 distance[current] = alt;
                 previous[current] = current;
                 pq.push(pair<int,int>(edges[current][i].dest_id, alt));
             }
-
-            if (edges[current][i].dest_id == id2) {
-                break;
-            }
         }
     }
-    
+    /*
+    cout << "All nodes with previous" << endl;
+    for (size_t i = 0; i < previous.size(); i++) {
+        cout << i << ": Previous=" << previous[i] << ", Distance from origin=" << distance[i] << endl;
+    }
+    */
+
     if (previous[id2] == -1)
         throw runtime_error("Priority queue ended before reaching our destination node");
 
