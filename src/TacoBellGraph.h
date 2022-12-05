@@ -12,6 +12,9 @@ class TacoBellGraph {
         bool isConnected(int id1, int id2) const;
         int size() const;
         double getDistance(int id1, int id2) const;
+        string getAddress(int id) const;
+        double getLatitude(int id) const;
+        double getLongitude(int id) const;
         
         /**
          * Arguments are the starting and ending coordingates.

@@ -1,10 +1,12 @@
 #include "TacoBellGraph.h"
 #include <algorithm>
+#include <iostream>
 #include <queue>
 #include <fstream>
 #include <sstream>
 #include <iterator>
 #include <utility>
+#include <limits>
 
 using namespace std;
 
@@ -13,33 +15,39 @@ TacoBellGraph::TacoBellGraph(string filename) {
 }
 
 void TacoBellGraph::readFile(string filename) {
-    ifstream taco_bells(filename);
+    ifstream taco_bells{filename};
 
     if (taco_bells.is_open()) {
-        std::istream_iterator<string> taco_bell_iter(taco_bells);
-        ++taco_bell_iter;
-        while (!taco_bells.eof()) {
-            string line = *taco_bell_iter;
+        std::vector<std::vector<std::string>> csvRows;
 
-            stringstream ss(line);
+        for (std::string line; getline(taco_bells, line);) {
+            istringstream ss(move(line));
 
-            vector<string> tokens;
-            string token;
-            while (getline(ss, token, ',')) tokens.push_back(token);
+            vector<std::string> row;
 
-            int id = stoi(tokens[1]);
-            string address = tokens[2];
-            double lat = stod(tokens[3]);
-            double lon = stod(tokens[4]);
+            if (!csvRows.empty()) {
+            // We expect each row to be as big as the first row
+                row.reserve(csvRows.front().size());
+            }
+            // std::getline can split on other characters, here we use ','
+            for (std::string value; std::getline(ss, value, ',');) {
+                row.push_back(std::move(value));
+            }
+            csvRows.push_back(std::move(row));
+        }
 
+        for (size_t i = 1; i < csvRows.size(); i++) {
+            int id = stoi(csvRows[i][1]);
+            string address = csvRows[i][2];
+            double lat = stod(csvRows[i][3]);
+            double lon = stod(csvRows[i][4]);
+    
             insertVertex(lat, lon, address, id);
             
             edges.push_back(vector<Edge>());
-            insertEdge(id, stoi(tokens[5]), stod(tokens[8]));
-            insertEdge(id, stoi(tokens[6]), stod(tokens[9]));
-            insertEdge(id, stoi(tokens[7]), stod(tokens[10]));
-            
-            ++taco_bell_iter;
+            insertEdge(id, stoi(csvRows[i][5]), stod(csvRows[i][8]));
+            insertEdge(id, stoi(csvRows[i][6]), stod(csvRows[i][9]));
+            insertEdge(id, stoi(csvRows[i][7]), stod(csvRows[i][10]));
         }
     }
 }
@@ -59,6 +67,27 @@ bool TacoBellGraph::isConnected(int id1, int id2) const {
     return false;
 }
 
+string TacoBellGraph::getAddress(int id) const {
+    return nodes.at(id).address_;
+}
+
+double TacoBellGraph::getLatitude(int id) const {
+    return nodes.at(id).latitude_;
+}
+
+double TacoBellGraph::getLongitude(int id) const {
+    return nodes.at(id).longitude_;
+}
+
+double TacoBellGraph::getDistance(int id1, int id2) const {
+    for (Edge edge : edges.at(id1)) {
+        if (edge.dest_id == id2) {
+            return edge.distance;
+        }
+    }
+    throw runtime_error("node not found");
+}
+
 int TacoBellGraph::size() const { return nodes.size(); }
 
 // if the vector index is simply the id itself, change algorithm to simply return the nodes.at(i) where i is our index
@@ -73,11 +102,11 @@ TacoBellNode TacoBellGraph::find(int id) const {
 
 vector<int> TacoBellGraph::dijkstraSearch(int id1, int id2) const {
 
-    if (id1 >= nodes.size() || id2 >= nodes.size() || id1 < 0 || id2 < 0)
+    if (id1 >= (int) nodes.size() || id2 >= (int) nodes.size() || id1 < 0 || id2 < 0)
         throw runtime_error("One id is out of bounds: nodes size = " + to_string(nodes.size()) + ", id1 = " + to_string(id1) + ", id2 = " + to_string(id2));
 
     // based on the dataset, we will just use index for each id
-    vector<int> distance(nodes.size(), INT64_MAX);
+    vector<int> distance(nodes.size(), numeric_limits<int>::max());
     vector<int> previous(nodes.size(), -1);
     priority_queue<pair<int, int>> pq;
 
@@ -93,7 +122,7 @@ vector<int> TacoBellGraph::dijkstraSearch(int id1, int id2) const {
         int current = pq.top().first;
         pq.pop();
 
-        for (int i = 0; i < edges[current].size(); i++) {
+        for (size_t i = 0; i < edges[current].size(); i++) {
             int alt = distance[current] + edges[current][i].distance;
 
             if (alt < distance[current]) {
