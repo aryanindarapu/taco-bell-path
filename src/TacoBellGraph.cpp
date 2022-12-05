@@ -4,7 +4,7 @@
 #include <fstream>
 #include <sstream>
 #include <iterator>
-#include <pair>
+#include <utility>
 
 using namespace std;
 
@@ -69,25 +69,24 @@ TacoBellNode TacoBellGraph::find(int id) const {
         }
     }
     throw runtime_error("node not found");
-    return TacoBellNode();
 }
 
 vector<int> TacoBellGraph::dijkstraSearch(int id1, int id2) const {
 
     if (id1 >= nodes.size() || id2 >= nodes.size() || id1 < 0 || id2 < 0)
-        throw runtime_error("One id is out of bounds: nodes size = " + nodes.size() + ", id1 = " + id1 + ", id2 = " + id2);
+        throw runtime_error("One id is out of bounds: nodes size = " + to_string(nodes.size()) + ", id1 = " + to_string(id1) + ", id2 = " + to_string(id2));
 
     // based on the dataset, we will just use index for each id
     vector<int> distance(nodes.size(), INT64_MAX);
     vector<int> previous(nodes.size(), -1);
-    priority_queue<pair<int, int> pq;
+    priority_queue<pair<int, int>> pq;
 
     // this is not implemented but we may needed if the algorithm is not functioning properly
     vector<bool> visited(nodes.size(), false);
 
     //initial start of our alogrithm
     distance[id1] = 0;
-    pq.push(id1, 0);
+    pq.push(pair<int,int>(id1, 0));
 
     while (!pq.empty())
     {
@@ -100,7 +99,7 @@ vector<int> TacoBellGraph::dijkstraSearch(int id1, int id2) const {
             if (alt < distance[current]) {
                 distance[current] = alt;
                 previous[current] = current;
-                pq.push(pair<int,int>(edges[current][i].dest_id, alt))
+                pq.push(pair<int,int>(edges[current][i].dest_id, alt));
             }
 
             if (edges[current][i].dest_id == id2) {
@@ -110,7 +109,7 @@ vector<int> TacoBellGraph::dijkstraSearch(int id1, int id2) const {
     }
     
     if (previous[id2] == -1)
-        throw runtime_error("Priority queue ended before reaching our destination node")
+        throw runtime_error("Priority queue ended before reaching our destination node");
 
     vector<int> path;
 
@@ -118,7 +117,7 @@ vector<int> TacoBellGraph::dijkstraSearch(int id1, int id2) const {
     while (current != -1) 
     {
         path.push_back(current);
-        current = previous(current);
+        current = previous[current];
     }
 
     reverse(path.begin(), path.end());
@@ -134,7 +133,7 @@ vector<int> TacoBellGraph::dijkstraSearch(int id1, int id2) const {
 vector<int> TacoBellGraph::BFS(int id1, int id2) {
 
     queue<int> q;
-    vector<bool> visited (nodes, false);
+    vector<bool> visited (nodes.size(), false);
     vector<int> previous (nodes.size(), -1);
 
     q.push(id1);
@@ -146,7 +145,7 @@ vector<int> TacoBellGraph::BFS(int id1, int id2) {
         
         if (current == id2) {
 
-            vector<int> path();
+            vector<int> path;
             path.push_back(id2);
 
             int previous_node = previous[id2];
@@ -162,7 +161,7 @@ vector<int> TacoBellGraph::BFS(int id1, int id2) {
         
         for (Edge e : edges[current]) {
             if (!visited[e.dest_id]) {
-                q.push(e.dest_id)
+                q.push(e.dest_id);
                 previous[e.dest_id] = current;
             }
         }
