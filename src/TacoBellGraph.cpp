@@ -166,7 +166,7 @@ vector<int> TacoBellGraph::BFS(int id1, int id2) {
     vector<int> previous (nodes.size(), -1);
 
     q.push(id1);
-    visited[id1] = true;
+    visited.at(id1) = true;
 
     while (!q.empty()) {
 

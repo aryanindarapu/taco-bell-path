@@ -2,6 +2,29 @@
 
 #include "TacoBellGraph.h"
 
+
+string vectorToString(vector<int> vect) {
+    string out = "(";
+
+    for (size_t i = 0; i < vect.size(); i++) {
+        out.push_back(vect[i]);
+        if (i != vect.size() - 1) {
+            out.push_back(',');
+            out.push_back(' ');
+        }
+    }
+
+    out.push_back(')');
+    return out;
+}
+
+
+TacoBellGraph graph("../data/final_data_dist.csv");
+
+TEST_CASE("graph size is correct", "[weight=5") {
+    REQUIRE(graph.size() == 285);
+}
+
 TEST_CASE("test graph", "[weight=5][timeout=8000]") {
     TacoBellGraph graph("../data/final_data_dist.csv");
     REQUIRE(graph.getAddress(0) == "555 W. Lake St.");
@@ -20,7 +43,7 @@ TEST_CASE("test graph", "[weight=5][timeout=8000]") {
     REQUIRE(graph.getDistance(0, 239) == 5.2);
     REQUIRE(graph.getAddress(239) == "270 E Army Trail Rd");
 }
-
+/*
 TEST_CASE("test dijkstras search", "[weight=5]") {
     TacoBellGraph graph("../data/final_data_dist.csv");
 
@@ -29,6 +52,24 @@ TEST_CASE("test dijkstras search", "[weight=5]") {
     vector<int> test = graph.dijkstraSearch(105, 163);
 
     for (size_t i = 0; i < solution.size(); i++) {
-        REQUIRE(test[i] == solution[i]);
+        // REQUIRE(test[i] == solution[i]);
     }
+}
+*/
+
+TEST_CASE("test BFS search", "[weight=5") {
+    TacoBellGraph graph("../data/final_data_dist.csv");
+
+    vector<int> solution = {21, 143, 89, 131, 45};
+    vector<int> test = graph.BFS(21, 45);
+
+    cout << "test BFS search" << endl;
+    cout << "solution: " << vectorToString(solution) << endl;
+    cout << "test: " << vectorToString(test) << endl;
+    
+    // for (size_t i = 0; i < solution.size(); i++) {
+    //     REQUIRE(test[i] == solution[i]);
+    // }
+
+    REQUIRE(solution == test);
 }
