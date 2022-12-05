@@ -19,9 +19,10 @@ string vectorToString(vector<int> vect) {
 }
 
 
-TacoBellGraph graph("../data/final_data_dist.csv");
+
 
 TEST_CASE("graph size is correct", "[weight=5") {
+    TacoBellGraph graph("../data/final_data_dist.csv");
     REQUIRE(graph.size() == 285);
 }
 
@@ -57,7 +58,7 @@ TEST_CASE("test dijkstras search", "[weight=5]") {
 }
 */
 
-TEST_CASE("test BFS search", "[weight=5") {
+TEST_CASE("test BFS search 1", "[weight=5") {
     TacoBellGraph graph("../data/final_data_dist.csv");
 
     vector<int> solution = {21, 143, 89, 131, 45};
@@ -72,4 +73,8 @@ TEST_CASE("test BFS search", "[weight=5") {
     // }
 
     REQUIRE(solution == test);
+}
+
+TEST_CASE("test BFS search 2", "[weight=5") {
+    
 }
