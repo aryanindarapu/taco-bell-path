@@ -4,6 +4,7 @@
 
 class TacoBellGraph {
     public:
+        TacoBellGraph() = default;
         TacoBellGraph(std::string filename);
         void insertVertex(double latitude, double longitude, std::string address, int store_id);
         void insertEdge(int id1, int id2, double distance);
