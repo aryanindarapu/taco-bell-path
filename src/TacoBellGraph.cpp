@@ -8,22 +8,20 @@
 #include <utility>
 #include <limits>
 
-using namespace std;
-
-TacoBellGraph::TacoBellGraph(string filename) {
+TacoBellGraph::TacoBellGraph(std::string filename) {
     readFile(filename);
 }
 
-void TacoBellGraph::readFile(string filename) {
-    ifstream taco_bells{filename};
+void TacoBellGraph::readFile(std::string filename) {
+    std::ifstream taco_bells{filename};
 
     if (taco_bells.is_open()) {
         std::vector<std::vector<std::string>> csvRows;
 
         for (std::string line; getline(taco_bells, line);) {
-            istringstream ss(move(line));
+            std::istringstream ss(move(line));
 
-            vector<std::string> row;
+            std::vector<std::string> row;
 
             if (!csvRows.empty()) {
             // We expect each row to be as big as the first row
@@ -38,13 +36,13 @@ void TacoBellGraph::readFile(string filename) {
 
         for (size_t i = 1; i < csvRows.size(); i++) {
             int id = stoi(csvRows[i][1]);
-            string address = csvRows[i][2];
+            std::string address = csvRows[i][2];
             double lat = stod(csvRows[i][3]);
             double lon = stod(csvRows[i][4]);
     
             insertVertex(lat, lon, address, id);
             
-            edges.push_back(vector<Edge>());
+            edges.push_back(std::vector<Edge>());
             insertEdge(id, stoi(csvRows[i][5]), stod(csvRows[i][8]));
             insertEdge(id, stoi(csvRows[i][6]), stod(csvRows[i][9]));
             insertEdge(id, stoi(csvRows[i][7]), stod(csvRows[i][10]));
@@ -67,7 +65,7 @@ bool TacoBellGraph::isConnected(int id1, int id2) const {
     return false;
 }
 
-string TacoBellGraph::getAddress(int id) const {
+std::string TacoBellGraph::getAddress(int id) const {
     return nodes.at(id).address_;
 }
 
@@ -85,7 +83,7 @@ double TacoBellGraph::getDistance(int id1, int id2) const {
             return edge.distance;
         }
     }
-    throw runtime_error("node not found");
+    throw std::runtime_error("node not found");
 }
 
 int TacoBellGraph::size() const { return nodes.size(); }
@@ -97,33 +95,32 @@ TacoBellNode TacoBellGraph::find(int id) const {
             return node;
         }
     }
-    throw runtime_error("node not found");
+    throw std::runtime_error("node not found");
 }
 
-vector<int> TacoBellGraph::dijkstraSearch(int id1, int id2) const {
+std::vector<int> TacoBellGraph::dijkstraSearch(int id1, int id2) const {
 
     if (id1 >= (int) nodes.size() || id2 >= (int) nodes.size() || id1 < 0 || id2 < 0)
-        throw runtime_error("One id is out of bounds: nodes size = " + to_string(nodes.size()) + ", id1 = " + to_string(id1) + ", id2 = " + to_string(id2));
+        throw std::runtime_error("One id is out of bounds: nodes size = " + std::to_string(nodes.size()) + ", id1 = " + std::to_string(id1) + ", id2 = " + std::to_string(id2));
 
     // based on the dataset, we will just use index for each id
-    vector<int> distance(nodes.size(), numeric_limits<int>::max());
-    vector<int> previous(nodes.size(), -1);
-    priority_queue<pair<int, int>> pq;
+    std::vector<int> distance(nodes.size(), std::numeric_limits<int>::max());
+    std::vector<int> previous(nodes.size(), -1);
+    std::priority_queue<std::pair<int, int>> pq;
 
     // this is not implemented but we may needed if the algorithm is not functioning properly
-    vector<bool> visited(nodes.size(), false);
+    std::vector<bool> visited(nodes.size(), false);
 
     //initial start of our alogrithm
     distance[id1] = 0;
-    pq.push(pair<int,int>(id1, 0));
+    pq.push(std::pair<int,int>(id1, 0));
 
     while (!pq.empty())
     {
         int current = pq.top().first;
         pq.pop();
 
-        if (current == id2)
-            break;
+        if (current == id2) break;
 
         for (size_t i = 0; i < edges[current].size(); i++) {
             // out of scope location, not going to use it
@@ -132,11 +129,11 @@ vector<int> TacoBellGraph::dijkstraSearch(int id1, int id2) const {
 
             // valid location
             int alt = distance[current] + edges[current][i].distance;
-            cout << alt << endl;
+            std::cout << alt << std::endl;
             if (alt < distance[current]) {
                 distance[current] = alt;
                 previous[current] = current;
-                pq.push(pair<int,int>(edges[current][i].dest_id, alt));
+                pq.push(std::pair<int,int>(edges[current][i].dest_id, alt));
             }
         }
     }
@@ -148,13 +145,12 @@ vector<int> TacoBellGraph::dijkstraSearch(int id1, int id2) const {
     */
 
     if (previous[id2] == -1)
-        throw runtime_error("Priority queue ended before reaching our destination node");
+        throw std::runtime_error("Priority queue ended before reaching our destination node");
 
-    vector<int> path;
+    std::vector<int> path;
 
     int current = id2;
-    while (current != -1) 
-    {
+    while (current != -1) {
         path.push_back(current);
         current = previous[current];
     }
@@ -169,13 +165,13 @@ vector<int> TacoBellGraph::dijkstraSearch(int id1, int id2) const {
  * 
  *  Returns a vector of all the taco bells that lead to the destination including the first location
 */
-vector<int> TacoBellGraph::BFS(int id1, int id2) {
+std::vector<int> TacoBellGraph::BFS(int id1, int id2) {
     if (id1 < 0 || (unsigned int) id1 >= nodes.size() || id2 < 0 || (unsigned int) id2 >= nodes.size())
-        throw runtime_error("id1 or id2 is out of bounds.");
+        throw std::runtime_error("id1 or id2 is out of bounds.");
     
-    queue<int> q;
-    vector<bool> visited (nodes.size(), false);
-    vector<int> previous (nodes.size(), -1);
+    std::queue<int> q;
+    std::vector<bool> visited (nodes.size(), false);
+    std::vector<int> previous (nodes.size(), -1);
 
     q.push(id1);
 
@@ -188,7 +184,7 @@ vector<int> TacoBellGraph::BFS(int id1, int id2) {
         
         if (current == id2) {
 
-            vector<int> path;
+            std::vector<int> path;
             path.push_back(id2);
 
             int previous_node = previous[id2];
@@ -216,5 +212,28 @@ vector<int> TacoBellGraph::BFS(int id1, int id2) {
         visited[current] = true;
     }
 
-    return vector<int>();
+    return std::vector<int>();
+}
+
+/**
+ * Betweeness centrality algorithm 
+ * 
+ * Given a certain node, this algorithm will check the shortest weighted paths for every pair of nodes in the graph.
+ * The algorithm divides the number of shortest paths with the given node in it, for a pair of nodes, by the total number of
+ * shortest paths, for those same pair of nodes. In this case, every pair of nodes has a unique set of shortest paths,
+ * thus the betweeness centrality will be an integer indicated the number of shortest paths in the graph containing that node.
+ * Returns the betweenness centrality of the given node
+*/
+int TacoBellGraph::betweennessCentrality(int id) {
+    int betweeness = 0;
+    for (unsigned long i = 0; i < nodes.size(); i++) {
+        if (i == (unsigned long) id) continue;
+        for (unsigned long j = i + 1; j < nodes.size(); j++) {
+            if (j == (unsigned long) id) continue;
+            std::vector<int> searchList = dijkstraSearch(i, j);
+            if (std::find(searchList.begin(), searchList.end(), id) != searchList.end()) betweeness += 1;
+        }
+    }
+
+    return betweeness;
 }

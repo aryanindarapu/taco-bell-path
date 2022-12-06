@@ -2,17 +2,15 @@
 #include <vector>
 #include "TacoBellNode.h"
 
-using namespace std;
-
 class TacoBellGraph {
     public:
-        TacoBellGraph(string filename);
+        TacoBellGraph(std::string filename);
         void insertVertex(double latitude, double longitude, std::string address, int store_id);
         void insertEdge(int id1, int id2, double distance);
         bool isConnected(int id1, int id2) const;
         int size() const;
         double getDistance(int id1, int id2) const;
-        string getAddress(int id) const;
+        std::string getAddress(int id) const;
         double getLatitude(int id) const;
         double getLongitude(int id) const;
         
@@ -24,21 +22,28 @@ class TacoBellGraph {
          * 
          * Returns all the ids
         */
-        vector<int> getPath(int startLong, int startLat, int endLong, int endLat) const;
+        std::vector<int> getPath(int startLong, int startLat, int endLong, int endLat) const;
 
         /**
          *  Breadth first search from one taco bell to another.
          * 
          *  Returns a vector of all the taco bells that lead to the destination including the first location
         */
-        vector<int> BFS(int id1, int id2);
+        std::vector<int> BFS(int id1, int id2);
         
         /**
-         * Intenal search for getPath
+         * Internal search for getPath
          * 
          * Returns a vector of all the ids that are from the first and last Taco Bell
         */
-        vector<int> dijkstraSearch(int id1, int id2) const;
+        std::vector<int> dijkstraSearch(int id1, int id2) const;
+
+        /**
+         * Betweeness centrality algorithm
+         * 
+         * Returns the betweenness centrality of the given node
+        */
+        int betweennessCentrality(int id);
 
     private:
         
@@ -46,7 +51,7 @@ class TacoBellGraph {
         /**
          * Reads csv file with Taco Bell locations data
         */
-        void readFile(string filename);
+        void readFile(std::string filename);
 
         /**
          * Calculates the distance between two nodes using Google Maps API
@@ -74,6 +79,6 @@ class TacoBellGraph {
          */
         TacoBellNode find(int id) const;
 
-        vector<TacoBellNode> nodes;
-        vector<std::vector<Edge>> edges;
+        std::vector<TacoBellNode> nodes;
+        std::vector<std::vector<Edge>> edges;
 };
