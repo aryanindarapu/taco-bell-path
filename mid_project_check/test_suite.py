@@ -5,7 +5,7 @@ from datetime import datetime
 
 data = pd.read_csv("../data/final_data.csv")
 distData = pd.DataFrame(columns=['id', 'address', 'currLat', 'currLong', 'near1Lat', 'near1Long', 'near2Lat', 'near2Long', 'near3Lat', 'near3Long', 'dist1', 'dist2', 'dist3'])
-client = googlemaps.Client("AIzaSyBgu5GV0iNd35X1zKRIeEEMCfFfI0l7F5Y")
+client = googlemaps.Client("YOUR_KEY_HERE")
 id = 0
 
 # Changes CSV file to include distance using Google Maps API

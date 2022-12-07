@@ -164,3 +164,9 @@ TEST_CASE("test BFS no results", "[weight=5]") {
 
     
 }
+
+TEST_CASE("test Betweenness Centrality - Champaign", "[weight=5]") {
+    TacoBellGraph graph("../data/final_data_dist.csv");
+    int solution = graph.betweennessCentrality(0);
+    
+}
