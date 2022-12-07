@@ -256,3 +256,15 @@ int TacoBellGraph::betweennessCentrality(int id) {
 
     return betweeness;
 }
+
+
+/**
+ * Algorithms that returns the taco bells on the way from Champaign to Chicago
+ * 
+ * Returns a vector of node IDs
+*/
+std::vector<int> TacoBellGraph::champaignToChicago() {
+    int champaignId = 186; // Taco Bell closest to the Illini Union
+    int chicagoId = 207; // Taco Bell closest to the Willis Tower
+    return dijkstraSearch(champaignId, chicagoId);
+}

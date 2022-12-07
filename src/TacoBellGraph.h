@@ -45,6 +45,13 @@ class TacoBellGraph {
         */
         int betweennessCentrality(int id);
 
+        /**
+         * Algorithms that returns the taco bells on the way from Champaign to Chicago
+         * 
+         * Returns a vector of node IDs
+        */
+        std::vector<int> champaignToChicago();
+
     private:
         
 
