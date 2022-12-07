@@ -6,7 +6,7 @@ class TacoBellGraph {
     public:
         TacoBellGraph() = default;
         TacoBellGraph(std::string filename);
-        void insertVertex(double latitude, double longitude, std::string address, int store_id);
+        void insertVertex(double latitude, double longitude, std::string address);
         void insertEdge(int id1, int id2, double distance);
         bool isConnected(int id1, int id2) const;
         int size() const;
@@ -53,6 +53,13 @@ class TacoBellGraph {
         */
         std::vector<int> champaignToChicago();
 
+        /**
+         * Algorithms that returns the taco bells on the way from any two TacoBells
+         * 
+         * Returns a vector of node IDs
+        */
+        std::vector<int> findTacoBellPath(std::string address1, std::string address2);
+
     private:
         
 
@@ -86,6 +93,13 @@ class TacoBellGraph {
          * @return TacoBellNode of that id 
          */
         TacoBellNode find(int id) const;
+        /**
+         * @brief Helper function to find the node that corresponds to the address
+         * 
+         * @param address is the address that we want the node for
+         * @return TacoBellNode of that address 
+         */
+        TacoBellNode find(std::string address) const;
 
         std::vector<TacoBellNode> nodes;
         std::vector<std::vector<Edge>> edges;

@@ -40,7 +40,7 @@ void TacoBellGraph::readFile(std::string filename) {
             double lat = stod(csvRows[i][3]);
             double lon = stod(csvRows[i][4]);
     
-            insertVertex(lat, lon, address, id);
+            insertVertex(lat, lon, address);
             
             edges.push_back(std::vector<Edge>());
             insertEdge(id, stoi(csvRows[i][5]), stod(csvRows[i][8]));
@@ -50,9 +50,10 @@ void TacoBellGraph::readFile(std::string filename) {
     }
 }
 
-void TacoBellGraph::insertVertex(double latitude, double longitude, std::string address, int store_id) {
-    TacoBellNode node(latitude, longitude, address, store_id);
+void TacoBellGraph::insertVertex(double latitude, double longitude, std::string address) {
+    TacoBellNode node(latitude, longitude, address, (int) nodes.size());
     nodes.push_back(node);
+    edges.push_back(std::vector<Edge>());
 }
 
 void TacoBellGraph::insertEdge(int id1, int id2, double distance) {
@@ -83,7 +84,7 @@ double TacoBellGraph::getDistance(int id1, int id2) const {
             return edge.distance;
         }
     }
-    throw std::runtime_error("node not found");
+    throw std::runtime_error("node not found: " + std::to_string(id1) + " to " + std::to_string(id2));
 }
 
 int TacoBellGraph::size() const { return nodes.size(); }
@@ -95,7 +96,16 @@ TacoBellNode TacoBellGraph::find(int id) const {
             return node;
         }
     }
-    throw std::runtime_error("node not found");
+    throw std::runtime_error("node not found: " + std::to_string(id));
+}
+
+TacoBellNode TacoBellGraph::find(std::string address) const {
+    for (TacoBellNode node : nodes) {
+        if (node.address_ == address) {
+            return node;
+        }
+    }
+    throw std::runtime_error("node not found: " + address);
 }
 
 /**
@@ -267,4 +277,16 @@ std::vector<int> TacoBellGraph::champaignToChicago() {
     int champaignId = 186; // Taco Bell closest to the Illini Union
     int chicagoId = 207; // Taco Bell closest to the Willis Tower
     return dijkstraSearch(champaignId, chicagoId);
+}
+
+
+/**
+* Algorithms that returns the taco bells on the way from any two TacoBells
+* 
+* Returns a vector of node IDs
+*/
+std::vector<int> TacoBellGraph::findTacoBellPath(std::string address1, std::string address2) {
+    int id1 = find(address1).store_id_;
+    int id2 = find(address2).store_id_;
+    return dijkstraSearch(id1, id2);
 }
