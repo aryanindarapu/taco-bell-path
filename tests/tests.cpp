@@ -146,7 +146,7 @@ TEST_CASE("Test Dijkstra's Search 2", "[weight=5]") {
 }
 
 TEST_CASE("Test Dijkstra's Search no results", "[weight=5]") {
-    std::cout << "Testing Dijkstra's Search 2" << std::endl;
+    std::cout << "Testing Dijkstra's Search No Results" << std::endl;
     TacoBellGraph graph("../data/final_data_dist.csv");
 
     vector<int> solution = {};
@@ -209,6 +209,7 @@ TEST_CASE("Test Betweenness Centrality - Chicago", "[weight=5]") {
  * 
  */
 TEST_CASE("Printing out Champaign to Chicago", "[weight=5]") {
+    std::cout << "Outputting Taco Bells From Champaing to Chicago" << std::endl;
     TacoBellGraph graph("../data/final_data_dist.csv");
     graph.champaignToChicago();
     REQUIRE(true);
