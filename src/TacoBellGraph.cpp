@@ -287,7 +287,7 @@ void TacoBellGraph::champaignToChicago() {
     int champaignId = 186; // Taco Bell closest to the Illini Union
     int chicagoId = 207; // Taco Bell closest to the Willis Tower
 
-    std::cout << "\nStart: " << nodes[champaignId].address_ << std::endl;
+    std::cout << "Start: " << nodes[champaignId].address_ << std::endl;
 
     auto path = dijkstraSearch(champaignId, chicagoId);
 
@@ -295,6 +295,14 @@ void TacoBellGraph::champaignToChicago() {
         if (i == path.size() - 1) std::cout << "End: ";
         std::cout << nodes[path[i]].address_<< std::endl;
     }
+
+    float distance = 0;
+    for (unsigned long i = 0; i < path.size() - 1; i++) {
+        distance += getDistance(path[i], path[i + 1]);
+    }
+
+    std::cout << "Total Distance: " << distance << " miles" << std::endl;
+    std::cout << "The distance is " << distance - 136 << " miles longer than the direct path." << std::endl;
 }
 
 
