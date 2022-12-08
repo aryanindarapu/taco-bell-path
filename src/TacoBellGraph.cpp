@@ -172,8 +172,8 @@ std::vector<int> TacoBellGraph::dijkstraSearch(int id1, int id2) const {
     }
 
     // This is to check that id2 has been marked and given a previous. If 
-    if (previous[id2] == -1)
-        throw std::runtime_error("Priority queue ended before reaching our destination node");
+    if (previous[id2] == -1) return {};
+        // throw std::runtime_error("Priority queue ended before reaching our destination node");
 
     // Generates a path that takes us back to our start id
     std::vector<int> path;
@@ -281,9 +281,9 @@ std::vector<int> TacoBellGraph::champaignToChicago() {
 
 
 /**
-* Algorithms that returns the taco bells on the way from any two TacoBells
-* 
-* Returns a vector of node IDs
+ * Algorithms that returns the taco bells on the way from any two TacoBells
+ * 
+ * Returns a vector of node IDs
 */
 std::vector<int> TacoBellGraph::findTacoBellPath(std::string address1, std::string address2) {
     int id1 = find(address1).store_id_;

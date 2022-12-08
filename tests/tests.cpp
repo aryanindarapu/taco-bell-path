@@ -20,12 +20,14 @@ string vectorToString(vector<int> vect) {
 }
 
 
-TEST_CASE("graph size is correct", "[weight=5") {
+TEST_CASE("Test Graph Size", "[weight=5") {
+    std::cout << "Testing Graph Size" << std::endl;
     TacoBellGraph graph("../data/final_data_dist.csv");
     REQUIRE(graph.size() == 285);
 }
 
-TEST_CASE("test node 1", "[weight=5][timeout=8000]") {
+TEST_CASE("Test Graph 1", "[weight=5][timeout=8000]") {
+    std::cout << "Testing Graph 1" << std::endl;
     TacoBellGraph graph("../data/final_data_dist.csv");
     REQUIRE(graph.getAddress(0) == "555 W. Lake St.");
     REQUIRE(graph.getLatitude(0) == 41.93787872988775);
@@ -44,7 +46,8 @@ TEST_CASE("test node 1", "[weight=5][timeout=8000]") {
     REQUIRE(graph.getAddress(239) == "270 E Army Trail Rd");
 }
 
-TEST_CASE("test node 2", "[weight=5][timeout=8000]") {
+TEST_CASE("Test Graph 2", "[weight=5][timeout=8000]") {
+    std::cout << "Testing Graph 2" << std::endl;
     TacoBellGraph graph("../data/final_data_dist.csv");
     REQUIRE(graph.getAddress(167) == "2410 E Rand Rd");
     REQUIRE(graph.getLatitude(167) == 42.094717788641915);
@@ -83,7 +86,8 @@ TEST_CASE("test node 2", "[weight=5][timeout=8000]") {
 }
 */
 
-TEST_CASE("test dijkstras search small", "[weight=5]") {
+TEST_CASE("Test Dijkstra's Search - Small", "[weight=5]") {
+    std::cout << "Testing Dijkstra's Search - Small" << std::endl;
     vector<int> solution = {0, 3, 6, 5};
     TacoBellGraph graph;
     for (int i = 0; i < 7; i++) {
@@ -121,7 +125,8 @@ TEST_CASE("test dijkstras search small", "[weight=5]") {
     // Add more path checks
 }
 
-TEST_CASE("test dijkstras search 1", "[weight=5]") {
+TEST_CASE("Test Dijkstra's Search 1", "[weight=5]") {
+    std::cout << "Testing Dijkstra's Search 1" << std::endl;
     TacoBellGraph graph("../data/final_data_dist.csv");
 
     vector<int> solution = {10, 238, 54, 156};
@@ -130,7 +135,8 @@ TEST_CASE("test dijkstras search 1", "[weight=5]") {
     REQUIRE(test == solution);
 }
 
-TEST_CASE("test dijkstras search 2", "[weight=5]") {
+TEST_CASE("Test Dijkstra's Search 2", "[weight=5]") {
+    std::cout << "Testing Dijkstra's Search 2" << std::endl;
     TacoBellGraph graph("../data/final_data_dist.csv");
 
     vector<int> solution = {229, 137, 4, 242, 239, 238, 54, 147};
@@ -139,7 +145,8 @@ TEST_CASE("test dijkstras search 2", "[weight=5]") {
     REQUIRE(test == solution);
 }
 
-TEST_CASE("test BFS search 1", "[weight=5") {
+TEST_CASE("Test BFS Search 1", "[weight=5") {
+    std::cout << "Testing BFS Search 1" << std::endl;
     TacoBellGraph graph("../data/final_data_dist.csv");
 
     vector<int> solution = {4, 137, 243, 278};
@@ -149,7 +156,8 @@ TEST_CASE("test BFS search 1", "[weight=5") {
     REQUIRE(test == solution);
 }
 
-TEST_CASE("test BFS search 2", "[weight=5") {
+TEST_CASE("Test BFS Search 2", "[weight=5") {
+    std::cout << "Testing BFS Search 2" << std::endl;
     TacoBellGraph graph("../data/final_data_dist.csv");
 
     vector<int> solution = {151, 76, 261, 262, 12, 167};
@@ -159,14 +167,23 @@ TEST_CASE("test BFS search 2", "[weight=5") {
     REQUIRE(test == solution);
 }
 
-TEST_CASE("test BFS no results", "[weight=5]") {
+TEST_CASE("Test BFS No Results", "[weight=5]") {
+    std::cout << "Testing BFS Search No Results" << std::endl;
     TacoBellGraph graph("../data/final_data_dist.csv");
 
     
 }
 
-TEST_CASE("test Betweenness Centrality - Champaign", "[weight=5]") {
+TEST_CASE("Test Betweenness Centrality - Champaign", "[weight=5]") {
+    std::cout << "Testing Betweenness Centrality - Champaign" << std::endl;
     TacoBellGraph graph("../data/final_data_dist.csv");
-    int solution = graph.betweennessCentrality(0);
-    
+    int solution = graph.betweennessCentrality(186);
+    REQUIRE(10 == solution);
+}
+
+TEST_CASE("Test Betweenness Centrality - Chicago", "[weight=5]") {
+    std::cout << "Testing Betweenness Centrality - Chicago" << std::endl;
+    TacoBellGraph graph("../data/final_data_dist.csv");
+    int solution = graph.betweennessCentrality(207);
+    REQUIRE(317 == solution);
 }

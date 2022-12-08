@@ -7,14 +7,14 @@ int main() {
     TacoBellGraph graph("../data/final_data_dist.csv");
 
     // std::cout << "Welcome to Find Taco Bell Path\n" << std::endl;
-    std::vector<int> temp = graph.BFS(186, 207);
-    std::cout << temp.size() << std::endl;
-    for (unsigned long i = 0; i < temp.size(); i++) {
-        std::cout << temp[i] << std::endl;
-    }
+    // std::vector<int> temp = graph.BFS(186, 207);
+    // std::cout << temp.size() << std::endl;
+    // for (unsigned long i = 0; i < temp.size(); i++) {
+    //     std::cout << temp[i] << std::endl;
+    // }
 
     // std::cout << graph.BFS(186, 207) << std::endl;
-    
+    std::cout << graph.betweennessCentrality(207) << std::endl;
     // std::string address1;
     // std::string address2;
 
