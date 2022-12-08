@@ -114,11 +114,13 @@ TacoBellNode TacoBellGraph::find(std::string address) const {
 */
 void printPQ(std::priority_queue<std::pair<int, int>> pq) {
     while (!pq.empty()) {
-        std::cout << pq.top().first << "\t";
+        std::cout << pq.top().second << "\t";
         pq.pop();
     }
     std::cout << std::endl;
 }
+
+
 
 std::vector<int> TacoBellGraph::dijkstraSearch(int id1, int id2) const {
 
@@ -131,6 +133,8 @@ std::vector<int> TacoBellGraph::dijkstraSearch(int id1, int id2) const {
     std::vector<int> previous(nodes.size(), -1);
     std::vector<bool> visited(nodes.size(), false);
 
+    //std::vector<double> coodrinate;
+
     // Priority queue with distance as first and id as second
     // distances are represented as negative values as the pq uses a max heap
     std::priority_queue<std::pair<int, int>> pq;
@@ -142,12 +146,17 @@ std::vector<int> TacoBellGraph::dijkstraSearch(int id1, int id2) const {
     while (!pq.empty())
     {   
         int current = pq.top().second;
+
+        //std::cout << "Current ID: " << current << ", Edges: ";
+
         pq.pop();
 
         // current is the destination, we will terminate the pq
         if (current == id2) break;
 
         for (size_t i = 0; i < edges[current].size(); i++) {
+            
+            //std::cout << edges[current][i].dest_id << " ";
 
             // out of scope location or we already visited the node, not going to use it
             if (edges[current][i].dest_id == -1 || visited[edges[current][i].dest_id]) {
@@ -166,11 +175,12 @@ std::vector<int> TacoBellGraph::dijkstraSearch(int id1, int id2) const {
             }
 
         }
-        
+        //std::cout << "\n";
         // Mark our current id that we visited it.
         visited[current] = true;
+        //coodrinate.push_back(nodes[current].latitude_);
     }
-
+    //std::cout << "MAX " << *max_element(coodrinate.begin(), coodrinate.end()) << std::endl;
     // This is to check that id2 has been marked and given a previous. If 
     if (previous[id2] == -1) return {};
         // throw std::runtime_error("Priority queue ended before reaching our destination node");
@@ -273,10 +283,18 @@ int TacoBellGraph::betweennessCentrality(int id) {
  * 
  * Returns a vector of node IDs
 */
-std::vector<int> TacoBellGraph::champaignToChicago() {
+void TacoBellGraph::champaignToChicago() {
     int champaignId = 186; // Taco Bell closest to the Illini Union
     int chicagoId = 207; // Taco Bell closest to the Willis Tower
-    return dijkstraSearch(champaignId, chicagoId);
+
+    std::cout << "\nStart: " << nodes[champaignId].address_ << std::endl;
+
+    auto path = dijkstraSearch(champaignId, chicagoId);
+
+    for (size_t i = 1; i < path.size(); i++) {
+        if (i == path.size() - 1) std::cout << "End: ";
+        std::cout << nodes[path[i]].address_<< std::endl;
+    }
 }
 
 

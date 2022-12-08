@@ -13,8 +13,8 @@ int main() {
     //     std::cout << temp[i] << std::endl;
     // }
 
-    // std::cout << graph.BFS(186, 207) << std::endl;
-    std::cout << graph.betweennessCentrality(207) << std::endl;
+    // //std::cout << graph.betweennessCentrality(207) << std::endl;
+    
     // std::string address1;
     // std::string address2;
 
@@ -37,6 +37,8 @@ int main() {
     // }
 
     // std::cout << '\n';
+
+    graph.champaignToChicago();
 
     return 0;
 }

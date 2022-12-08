@@ -51,7 +51,7 @@ class TacoBellGraph {
          * 
          * Returns a vector of node IDs
         */
-        std::vector<int> champaignToChicago();
+        void champaignToChicago();
 
         /**
          * Algorithms that returns the taco bells on the way from any two TacoBells

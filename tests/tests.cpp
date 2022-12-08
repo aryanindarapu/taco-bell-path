@@ -30,8 +30,8 @@ TEST_CASE("Test Graph 1", "[weight=5][timeout=8000]") {
     std::cout << "Testing Graph 1" << std::endl;
     TacoBellGraph graph("../data/final_data_dist.csv");
     REQUIRE(graph.getAddress(0) == "555 W. Lake St.");
-    REQUIRE(graph.getLatitude(0) == 41.93787872988775);
-    REQUIRE(graph.getLongitude(0) == -88.00291031599045);
+    REQUIRE(graph.getLatitude(0) == 41.93787872988780);
+    REQUIRE(graph.getLongitude(0) == -88.00291031599050);
 
     REQUIRE(graph.isConnected(0, 159));
     REQUIRE(graph.getDistance(0, 159) == 2.8);
@@ -50,8 +50,8 @@ TEST_CASE("Test Graph 2", "[weight=5][timeout=8000]") {
     std::cout << "Testing Graph 2" << std::endl;
     TacoBellGraph graph("../data/final_data_dist.csv");
     REQUIRE(graph.getAddress(167) == "2410 E Rand Rd");
-    REQUIRE(graph.getLatitude(167) == 42.094717788641915);
-    REQUIRE(graph.getLongitude(167) == -87.95317505301682);
+    REQUIRE(graph.getLatitude(167) == 42.094717788641900);
+    REQUIRE(graph.getLongitude(167) == -87.95317505301680);
 
     REQUIRE(graph.isConnected(167, 12));
     REQUIRE(graph.getDistance(167, 12) == 3.9);
@@ -145,6 +145,16 @@ TEST_CASE("Test Dijkstra's Search 2", "[weight=5]") {
     REQUIRE(test == solution);
 }
 
+TEST_CASE("Test Dijkstra's Search no results", "[weight=5]") {
+    std::cout << "Testing Dijkstra's Search 2" << std::endl;
+    TacoBellGraph graph("../data/final_data_dist.csv");
+
+    vector<int> solution = {};
+    vector<int> test = graph.dijkstraSearch(2, 13);
+    
+    REQUIRE(test == solution);
+}
+
 TEST_CASE("Test BFS Search 1", "[weight=5") {
     std::cout << "Testing BFS Search 1" << std::endl;
     TacoBellGraph graph("../data/final_data_dist.csv");
@@ -171,19 +181,35 @@ TEST_CASE("Test BFS No Results", "[weight=5]") {
     std::cout << "Testing BFS Search No Results" << std::endl;
     TacoBellGraph graph("../data/final_data_dist.csv");
 
-    
+    vector<int> solution = {};
+
+    vector<int> test = graph.BFS(1, 13);
+
+    REQUIRE(test == solution);
 }
 
 TEST_CASE("Test Betweenness Centrality - Champaign", "[weight=5]") {
     std::cout << "Testing Betweenness Centrality - Champaign" << std::endl;
     TacoBellGraph graph("../data/final_data_dist.csv");
     int solution = graph.betweennessCentrality(186);
-    REQUIRE(10 == solution);
+    REQUIRE(80 == solution);
 }
 
 TEST_CASE("Test Betweenness Centrality - Chicago", "[weight=5]") {
     std::cout << "Testing Betweenness Centrality - Chicago" << std::endl;
     TacoBellGraph graph("../data/final_data_dist.csv");
     int solution = graph.betweennessCentrality(207);
-    REQUIRE(317 == solution);
+    REQUIRE(377 == solution);
+}
+
+/**
+ * @brief This test case is just so you can see the final result of our graph.
+ * 
+ * If all other test cases pass, this should be the final representation of our path
+ * 
+ */
+TEST_CASE("Printing out Champaign to Chicago", "[weight=5]") {
+    TacoBellGraph graph("../data/final_data_dist.csv");
+    graph.champaignToChicago();
+    REQUIRE(true);
 }
