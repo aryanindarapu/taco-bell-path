@@ -15,8 +15,8 @@ We have several files located in our repository to submit for our project.
 - Our code, which includes our graph building and storage, BFS, Dijkstra's, and Betwenness Centrality is located in the `src` folder
 
 ### Non-Technical Portion
-- All of the "non-technical" portions of the submission are contained within the main directory of the repository. This includes the README, written report, and presentation.
-
+- All of the "non-technical" portions of the submission are contained within the main directory of the repository. This includes the README and the written report.
+- The presentation is located at https://youtu.be/jYi9StiJg1A
 
 ## The Executable
 ### Running the Executable
